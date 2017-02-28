@@ -25,3 +25,4 @@ module.config(function($stateProvider) {
   
   routes.forEach(i => $stateProvider.state(i));
 });
+
