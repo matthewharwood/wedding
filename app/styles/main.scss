@@ -29,15 +29,37 @@
 }
 
 .cover-img{
-    height: 75vh;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    padding-top: 80px;
-    text-align: center;
-    color: #fff;
+  height: 75vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  padding-top: 80px;
+  text-align: center;
+  color: #fff;
 }
 
 .home-img{
   background-image: url("../images/home.jpg");
+}
+
+.visit-img{
+  background-image: url("../images/visit.jpg");
+}
+
+.photo-img{
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;  
+}
+
+#photo-4{
+  margin-top: -15%;
+}
+
+#photo-7{
+  background-image: url("../images/photo-7.jpg");
+}
+
+#photo-9{
+  background-image: url("../images/photo-9.jpg");
 }
