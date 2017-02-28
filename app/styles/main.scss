@@ -63,3 +63,11 @@ body {
     background: rgba(0,0,0,.15);
   }
 }
+
+.cover{
+    height: 600px;
+    background: url("https://placekitten.com/1000/600") center center no-repeat;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-top: 40px;
+}
