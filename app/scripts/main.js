@@ -43,10 +43,27 @@ module.component('filterButtons', {
   `,
   controller: FilterButtonsController,
   bindings: {
-    data: '<'
+    data: '<',
+    output: '&',
   }
 });
 
+
+module.component('placeItem', {
+  template: `
+    <div>{{$ctrl.data.name}}</div>
+  `,
+  controller: PlaceItemController,
+  bindings: {
+    data: '<'
+  }
+});
+function PlaceItemController() {
+  this.data = this.data || undefined;
+  this.$onInit = () => {
+
+  }
+}
 function FilterButtonsController() {
   this.data = this.data || undefined;
   this.$onInit = () =>{
@@ -56,7 +73,14 @@ function FilterButtonsController() {
 
 function VisitController() {
   this.filterList = ['See all', 'Restaurant', 'Cafe', 'Outdoor', 'Entertainment', 'Activity', 'Bar'];
-
+  this.places = [
+    {name: 'place1', desc: 'Get Drunk, gamble, and live in 1920', categories: ['Restaurant']},
+    {name: 'place2', desc: '2Get Drunk, gamble, and live in 1920', categories: ['Entertainment']},
+    {name: 'place3', desc: '2Get Drunk, gamble, and live in 1920', categories: ['Activity']},
+    {name: 'place4', desc: '3Get Drunk, gamble, and live in 1920', categories: ['Bar']},
+    {name: 'place5', desc: '4Get Drunk, gamble, and live in 1920', categories: ['Outdoor']},
+    {name: 'place6', desc: '5Get Drunk, gamble, and live in 1920', categories: ['Cafe']},
+  ];
   this.$onInit = () => {
     console.log('wtf')
   }
