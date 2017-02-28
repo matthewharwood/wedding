@@ -4,9 +4,9 @@ console.log(module);
 
 module.config(function($stateProvider) {
   const about = {
-    name: 'hello',
-    url: '/hello',
-    template: '<h3>hello world!</h3>'
+    name: 'home',
+    url: '/',
+    templateUrl: './home/index.html'
   };
   $stateProvider.state(about);
 });
