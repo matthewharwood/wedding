@@ -75,7 +75,6 @@ function FilterButtonsController() {
 function VisitController() {
   this.filteredPlacesList = [];
   this.filterList = [
-    {name: 'See all', active: false},
     {name: 'Restaurant', active: false},
     {name: 'Cafe', active: false},
     {name: 'Outdoor', active: false},
@@ -85,26 +84,58 @@ function VisitController() {
   ];
 
   this.places = [
-    {name: 'place1', desc: 'Restaurant Get Drunk, gamble, and live in 1920', categories: ['Restaurant']},
-    {name: 'place2', desc: 'Entertainment 2Get Drunk, gamble, and live in 1920', categories: ['Entertainment']},
-    {name: 'place3', desc: 'Activity 2Get Drunk, gamble, and live in 1920', categories: ['Activity']},
-    {name: 'place4', desc: 'Bar 3Get Drunk, gamble, and live in 1920', categories: ['Bar']},
-    {name: 'place5', desc: 'Outdoor 4Get Drunk, gamble, and live in 1920', categories: ['Outdoor']},
-    {name: 'place6', desc: 'Cafe 5Get Drunk, gamble, and live in 1920', categories: ['Cafe']},
+    {name: 'Bernal Heights Park', desc: 'Our favorite San Francisco vantage point', categories: ['Outdoors']},
+    {name: 'Zero Zero', desc: 'Where we first met', categories: ['Restaurant']},
+    {name: 'Trouble Coffee + General Store', desc: 'Ultimate hipster experience near the ocean', categories: ['Cafe', 'Activity']},
+    {name: 'Iza Ramen', desc: 'The best ramen outside of Japan', categories: ['Restaurant']},
+    {name: 'Flora Grubb', desc: 'Coffee, nature, heated benches for your butt', categories: ['Cafe', 'Outdoor']},
+    {name: 'Philz Coffee + Minnesota Steer project', desc: 'Get local coffee, get local art', categories: ['Cafe']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
+    {name: 'Neighbor bakehouse', desc: 'Ditch Tartine, this one\'s better. Go early, or they sell out', categories: ['Cafe' ]},
+    {name: 'House of Air', desc: 'Trampolines with a view', categories: ['Activity']},
+    {name: 'ASIASF', desc: 'Alternative entertainment', categories: ['Entertainment', 'Bar', 'Restaurant']},
+    {name: 'Dolores Park', desc: 'Meet weirdos', categories: ['Outdoor']},
+    {name: 'Noeteca', desc: 'Freshest French-inspired brunch', categories: ['Restaurant']},
+    {name: 'Mac Daddy', desc: 'Gourmet macaroni and cheese', categories: ['Restaurant']},
+    {name: 'Trolley', desc: 'Easiest way to become a stereotypical tourist', categories: ['Activity']},
+    {name: 'Eiji', desc: 'Needs copy', categories: ['Activity']},
   ];
 
   this.$onInit = () => {
-    this.filteredPlacesList = this.places;
+    this.resetFilters();
   };
-
+  this.resetFilters = () => {
+    this.filteredPlacesList = this.places;
+  }
   this.output = () => {
-    console.log('output');
-    const getFilterByName = (i) => i.name;
+    const getFilterByName = (i) => {
+      console.log('wtffff');
+      return i.name;
+    } ;
     const removeFalse = (item) => item.filter(item => item.active);
 
-    const trueList = removeFalse(this.filterList).map(getFilterByName);
-    this.filteredPlacesList = this.places.filter(place => trueList.some(item => place.categories.includes(item)));
-    // // console.log(_curryPlaceCategoriesIncludeFilterName(this.places[0]) (this.filterList[1]));
-    // this.filteredPlacesList = console.log(this.places.filter((place) => place.some((item) => arrIncludeName(item, item))));
+    const finalFilter = this.places.filter(place => {
+          return removeFalse(this.filterList)
+            .map(getFilterByName)
+            .some(item => {
+              console.log(item);
+              return place.categories.includes(item)
+            })
+        });
+
+    if(finalFilter.length > 0 ) {
+      this.filteredPlacesList = finalFilter;
+    } else {
+      this.resetFilters();
+    }
   }
 }
