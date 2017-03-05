@@ -51,7 +51,6 @@ module.component('filterButtons', {
 
 module.component('placeItem', {
   template: `
-   
     <div>{{$ctrl.data.name}}</div>
   `,
   controller: PlaceItemController,
@@ -87,20 +86,23 @@ function VisitController() {
     {name: 'Bernal Heights Park', desc: 'Our favorite San Francisco vantage point', categories: ['Outdoors']},
     {name: 'Zero Zero', desc: 'Where we first met', categories: ['Restaurant']},
     {name: 'Trouble Coffee + General Store', desc: 'Ultimate hipster experience near the ocean', categories: ['Cafe', 'Activity']},
+    {name: 'Mission Chinese', desc: 'Hot hot, american chinese fusion', categories: ['Restaurant']},
     {name: 'Iza Ramen', desc: 'The best ramen outside of Japan', categories: ['Restaurant']},
     {name: 'Flora Grubb', desc: 'Coffee, nature, heated benches for your butt', categories: ['Cafe', 'Outdoor']},
-    {name: 'Philz Coffee + Minnesota Steer project', desc: 'Get local coffee, get local art', categories: ['Cafe']},
+    {name: 'Philz Coffee + Minnesota Steer project', desc: 'Get local coffee, get local art', categories: ['Cafe','Activity']},
+    {name: 'SpeakEasy', desc: 'Get drunk, gamble, and live in 1920s', categories: ['Activity','Bar','Entertainment']},
+    {name: 'Keiko A Nob Hill', desc: 'If you have money to burn, best food you\'ll ever have', categories: ['Restaurant']},
     {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Neighbor bakehouse', desc: 'Ditch Tartine, this one\'s better. Go early, or they sell out', categories: ['Cafe' ]},
+    {name: 'Basa', desc: 'Best $8 sushi & poke', categories: ['Restaurant']},
+    {name: 'Farmhouse', desc: 'Best Thai food with pretentious interior', categories: ['Restaurant']},
+    {name: 'Nihon Whiskey', desc: 'Must go for whiskey lovers', categories: ['Bar']},
+    {name: 'Limon Rotisserie', desc: 'Do yourself a favor and just get chicken & ceviche', categories: ['Restaurant']},
+    {name: 'Alcatraz', desc: 'We haven\'t been but everyon says it\'s cool ¯\_(ツ)_/¯', categories: ['Activity']},
+    {name: 'La Taqueria', desc: 'Best taco in San Francisco', categories: ['Restaurant']},
+    {name: 'UtoEpia', desc: 'Get a massage, experience uTOEpia', categories: ['Activity']},
+    {name: 'Golden Gate Park', desc: 'Get lost, it\'s big, and rid a Segway', categories: ['Outdoor']},
+    {name: 'SFMoMA', desc: 'The only decent art museum in San Francisco', categories: ['Activity']},
+    {name: 'Neighbor bakehouse', desc: 'Ditch Tartine, this one\'s better. Go early, or they sell out', categories: ['Cafe']},
     {name: 'House of Air', desc: 'Trampolines with a view', categories: ['Activity']},
     {name: 'ASIASF', desc: 'Alternative entertainment', categories: ['Entertainment', 'Bar', 'Restaurant']},
     {name: 'Dolores Park', desc: 'Meet weirdos', categories: ['Outdoor']},
@@ -113,24 +115,20 @@ function VisitController() {
   this.$onInit = () => {
     this.resetFilters();
   };
+
   this.resetFilters = () => {
     this.filteredPlacesList = this.places;
-  }
-  this.output = () => {
-    const getFilterByName = (i) => {
-      console.log('wtffff');
-      return i.name;
-    } ;
-    const removeFalse = (item) => item.filter(item => item.active);
+  };
 
-    const finalFilter = this.places.filter(place => {
-          return removeFalse(this.filterList)
+  this.output = () => {
+    const getFilterByName = (i) => i.name;
+    const removeFalse = (item) => item.filter(item => item.active);
+    const doesPlaceIncludeItem = (place, item) => place.categories.includes(item);
+
+    let finalFilter = this.places
+            .filter(place => removeFalse(this.filterList)
             .map(getFilterByName)
-            .some(item => {
-              console.log(item);
-              return place.categories.includes(item)
-            })
-        });
+            .some(item => doesPlaceIncludeItem(place, item)));
 
     if(finalFilter.length > 0 ) {
       this.filteredPlacesList = finalFilter;
