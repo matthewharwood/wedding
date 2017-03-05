@@ -5,13 +5,13 @@
 	text-transform: uppercase;
 	font-weight: normal;
 	letter-spacing: 2px;
-	padding-top: 5px;
+	padding-top: 11px;
 }
 
-.nav-link{
+.nav-item{
 	font-size: 13px;
 	font-weight: bold;
-	padding-top: 9px;
+	margin-top: 5px;
 }
 
 body{
@@ -34,6 +34,11 @@ sup{
 p, li{
 	font-size: 13px;
 	color: rgba(0,0,0,0.85);
+}
+
+li{
+	margin-bottom: 8px;
+	list-style: none;
 }
 
 .introduction {
@@ -105,6 +110,24 @@ p, li{
 	}
 }
 
+.photo-text{
+	h5{
+		-webkit-font-smoothing: antialiased;
+		font-family: 'Times New Roman', serif;
+		font-style: italic;
+		font-size: 24px;		
+	}
+
+	h6{
+		font-weight: bold;
+		text-transform: uppercase;
+		font-size: 13px;
+	}
+}
+
+.credit{
+		margin-bottom: 0;
+}
 
 .footer{
 	font-size: 10px;
