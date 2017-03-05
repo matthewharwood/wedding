@@ -26,7 +26,7 @@
   border-top: 1px solid rgba(0,0,0,0.15);
 }
 
-.divider {
+.home-divider {
   position: relative;
   &::after{
     position: absolute;
@@ -36,6 +36,17 @@
     background: rgba(0,0,0,.15);
   }
 }
+
+.visit-divider {
+  &::after{
+    position: relative;
+    content: "";
+    height: 1px;
+    width: 100%;
+    background: rgba(0,0,0,.15);
+  }
+}
+
 
 .cover-img{
   height: 75vh;

@@ -19,7 +19,7 @@ body{
 }
 
 a{
-	color: #000;
+	color: #417505;
 	font-weight: bold;
 }
 
@@ -31,7 +31,7 @@ sup{
 	text-transform: lowercase;
 }
 
-p{
+p, li{
 	font-size: 13px;
 	color: rgba(0,0,0,0.85);
 }
@@ -86,18 +86,30 @@ p{
 			font-weight: bold;
 			text-transform: uppercase;
 			font-size: 13px;
-			letter-spacing: 1px;
 		}
 
 		.attire{
 			margin-bottom: 0;
-			font-weight: bold;
-			color: #000;
 		}
+	}
+}
+
+.visit-subhead{
+	h5{
+		-webkit-font-smoothing: antialiased;
+		font-family: 'Times New Roman', serif;
+		font-style: italic;
+		font-size: 24px;		
+	}
+
+	h6{
+		font-weight: bold;
+		text-transform: uppercase;
+		font-size: 13px;
 	}
 }
 
 
 .footer{
-	font-size: 13px;
+	font-size: 10px;
 }
