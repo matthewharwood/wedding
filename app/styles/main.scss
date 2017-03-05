@@ -2,6 +2,7 @@
 @import "bower_components/bootstrap/scss/bootstrap.scss";
 // endbower
 
+@import "./_typography.scss";
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
@@ -15,6 +16,14 @@
   .container {
     max-width: 46rem;
   }
+}
+
+.navbar{
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+
+.footer{
+  border-top: 1px solid rgba(0,0,0,0.15);
 }
 
 .divider {
