@@ -24,22 +24,17 @@ module.config(function($urlRouterProvider, $stateProvider) {
   routes.forEach(i => $stateProvider.state(i));
 });
 
-module.component('visitComponent', {
-  templateUrl:'./visit/index.html',
-  controller: VisitController,
-});
+
 
 module.component('filterButtons', {
   template: `
-  <ul class="list-inline list-unstyled">
-    <li class="list-inline-item">
+    <div class="list-inline-item">
       <label class="custom-control custom-checkbox">
         <input type="checkbox" class="custom-control-input" ng-model="$ctrl.data.active" ng-click="$ctrl.output()">
         <span class="custom-control-indicator"></span>
         <span class="custom-control-description">{{$ctrl.data.name}}</span>
       </label>
-    </li> 
-  </ul>
+    </div> 
   `,
   controller: FilterButtonsController,
   bindings: {
@@ -48,28 +43,232 @@ module.component('filterButtons', {
   }
 });
 
+function FilterButtonsController() {
+  this.data = this.data || undefined;
+}
+
+module.component('googleMap', {
+  template: `
+    <ng-transclude></ng-transclude> 
+    <section class="full-bleed"></section>
+  `,
+  controller: GoogleMapController,
+  transclude: true,
+  bindings: {
+    selected: '<',
+    data: '<',
+  }
+});
+
+function GoogleMapController($element, $timeout) {
+  this.data = this.data || undefined;
+  this.map = undefined;
+  this.markers = [];
+  this.selected = this.selected || undefined;
+  this.defaultMarker = {lat: 37.7931154, lng: -122.4165049};
+
+  this.$onInit = () => {
+    $timeout(()=> {
+      this.initMap();
+    }, 2000);
+  };
+
+  this.$onChanges = (changes) => {
+
+    if(changes.selected && changes.selected.currentValue){
+      console.log(changes.selected.currentValue);
+      this.setCenter();
+    }
+    if(changes.data && changes.data.currentValue){
+      this.data = changes.data.currentValue;
+      this.makeMarkers();
+    }
+  };
+
+  this.initMap = () => {
+    this.map = new google.maps.Map($element.find('section')[0], {
+      zoom: 14,
+      scrollwheel: false,
+      navigationControl: false,
+      mapTypeControl: false,
+      scaleControl: false,
+      draggable: false,
+      center: this.defaultMarker,
+      styles: [
+        {
+          featureType: "administrative",
+          elementType: "labels.text.fill",
+          stylers: [
+            {
+              color: "#444444"
+            }
+          ]
+        },
+        {
+          featureType: "landscape",
+          elementType: "all",
+          stylers: [
+            {
+              color: "#f2f2f2"
+            }
+          ]
+        },
+        {
+          featureType: "poi",
+          elementType: "all",
+          stylers: [
+            {
+              visibility: "off"
+            }
+          ]
+        },
+        {
+          featureType: "road",
+          elementType: "all",
+          stylers: [
+            {
+              saturation: -100
+            },
+            {
+              lightness: 45
+            }
+          ]
+        },
+        {
+          featureType: "road.highway",
+          elementType: "all",
+          stylers: [
+            {
+              visibility: "simplified"
+            }
+          ]
+        },
+        {
+          featureType: "road.arterial",
+          elementType: "labels.icon",
+          stylers: [
+            {
+              visibility: "off"
+            }
+          ]
+        },
+        {
+          featureType: "transit",
+          elementType: "all",
+          stylers: [
+            {
+              visibility: "off"
+            }
+          ]
+        },
+        {
+          featureType: "water",
+          elementType: "all",
+          stylers: [
+            {
+              color: "#46bcec"
+            },
+            {
+              visibility: "on"
+            }
+          ]
+        },
+        {
+          featureType: "water",
+          elementType: "geometry.fill",
+          stylers: [
+            {
+              color: "#cbd4ae"
+            }
+          ]
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.fill",
+          stylers: [
+            {
+              color: "#a1ab82"
+            }
+          ]
+        }
+      ]
+    });
+    this.makeMarkers();
+  };
+
+  this.setCenter = () => {
+    console.log('center', this.selected.pos.lat, this.selected.pos.lng)
+    this.map.setCenter(new google.maps.LatLng(this.selected.pos.lat, this.selected.pos.lng));
+  };
+
+  this.setMapOnAll = (map) => {
+    if(!this.markers.length) return;
+    for (let i = 0; i < this.markers.length; i++) {
+      this.markers[i].marker.setMap(map);
+    }
+  };
+
+  this.makeMarkers = () => {
+    this.setMapOnAll(null);
+    this.markers = this.data.map(i => {
+      return {
+        data: i,
+        info: new google.maps.InfoWindow({
+          content: `<a href="#">${i.name}</a>`
+        }),
+        marker: new google.maps.Marker({
+          position: i.pos,
+          map: this.map,
+          title: `${i.name}`,
+          icon: 'http://placekitten.com/g/30/30'
+        })
+      };
+    });
+    // the smooth zoom function
+    this.smoothZoom = (map, max, cnt)=> {
+      if (cnt >= max) return;
+
+      let z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+        google.maps.event.removeListener(z);
+        smoothZoom(map, max, cnt + 1);
+      });
+
+      setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
+
+    };
+
+    this.listeners = this.markers.map(i => {
+
+      i.marker.addListener('click', ()=> {
+        i.info.open(this.map, i.marker);
+      });
+    });
+
+  }
+}
 
 module.component('placeItem', {
   template: `
-    <div>{{$ctrl.data.name}}</div>
+    <div ng-click="$ctrl.selected({name: $ctrl.data})">{{$ctrl.data.name}}</div>
   `,
   controller: PlaceItemController,
   bindings: {
     data: '<',
-    filters: '<'
+    filters: '<',
+    selected: '&'
   }
 });
+
 function PlaceItemController() {
   this.data = this.data || undefined;
   this.filters = this.filters || undefined;
-
-  this.$onInit = () => {
-
-  }
+  this.selected = this.selected || undefined;
 }
-function FilterButtonsController() {
-  this.data = this.data || undefined;
-}
+
+module.component('visitComponent', {
+  templateUrl:'./visit/index.html',
+  controller: VisitController,
+});
 
 function VisitController() {
   this.filteredPlacesList = [];
@@ -83,37 +282,40 @@ function VisitController() {
   ];
 
   this.places = [
-    {name: 'Bernal Heights Park', desc: 'Our favorite San Francisco vantage point', categories: ['Outdoors']},
-    {name: 'Zero Zero', desc: 'Where we first met', categories: ['Restaurant']},
-    {name: 'Trouble Coffee + General Store', desc: 'Ultimate hipster experience near the ocean', categories: ['Cafe', 'Activity']},
-    {name: 'Mission Chinese', desc: 'Hot hot, american chinese fusion', categories: ['Restaurant']},
-    {name: 'Iza Ramen', desc: 'The best ramen outside of Japan', categories: ['Restaurant']},
-    {name: 'Flora Grubb', desc: 'Coffee, nature, heated benches for your butt', categories: ['Cafe', 'Outdoor']},
-    {name: 'Philz Coffee + Minnesota Steer project', desc: 'Get local coffee, get local art', categories: ['Cafe','Activity']},
-    {name: 'SpeakEasy', desc: 'Get drunk, gamble, and live in 1920s', categories: ['Activity','Bar','Entertainment']},
-    {name: 'Keiko A Nob Hill', desc: 'If you have money to burn, best food you\'ll ever have', categories: ['Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Basa', desc: 'Best $8 sushi & poke', categories: ['Restaurant']},
-    {name: 'Farmhouse', desc: 'Best Thai food with pretentious interior', categories: ['Restaurant']},
-    {name: 'Nihon Whiskey', desc: 'Must go for whiskey lovers', categories: ['Bar']},
-    {name: 'Limon Rotisserie', desc: 'Do yourself a favor and just get chicken & ceviche', categories: ['Restaurant']},
-    {name: 'Alcatraz', desc: 'We haven\'t been but everyon says it\'s cool ¯\_(ツ)_/¯', categories: ['Activity']},
-    {name: 'La Taqueria', desc: 'Best taco in San Francisco', categories: ['Restaurant']},
-    {name: 'UtoEpia', desc: 'Get a massage, experience uTOEpia', categories: ['Activity']},
-    {name: 'Golden Gate Park', desc: 'Get lost, it\'s big, and rid a Segway', categories: ['Outdoor']},
-    {name: 'SFMoMA', desc: 'The only decent art museum in San Francisco', categories: ['Activity']},
-    {name: 'Neighbor bakehouse', desc: 'Ditch Tartine, this one\'s better. Go early, or they sell out', categories: ['Cafe']},
-    {name: 'House of Air', desc: 'Trampolines with a view', categories: ['Activity']},
-    {name: 'ASIASF', desc: 'Alternative entertainment', categories: ['Entertainment', 'Bar', 'Restaurant']},
-    {name: 'Dolores Park', desc: 'Meet weirdos', categories: ['Outdoor']},
-    {name: 'Noeteca', desc: 'Freshest French-inspired brunch', categories: ['Restaurant']},
-    {name: 'Mac Daddy', desc: 'Gourmet macaroni and cheese', categories: ['Restaurant']},
-    {name: 'Trolley', desc: 'Easiest way to become a stereotypical tourist', categories: ['Activity']},
-    {name: 'Eiji', desc: 'Needs copy', categories: ['Activity']},
+    {name: 'Bernal Heights Park', desc: 'Our favorite San Francisco vantage point', categories: ['Outdoors'], pos: {lat: 37.7433416, lng:-122.416179}},
+    {name: 'Zero Zero', desc: 'Where we first met', categories: ['Restaurant'], pos: {lat: 37.7816139, lng: -122.4041343}},
+    {name: 'Trouble Coffee + General Store', desc: 'Ultimate hipster experience near the ocean', categories: ['Cafe', 'Activity'], pos: {lat: 37.7602832, lng: -122.5076744}},
+    {name: 'Mission Chinese', desc: 'Hot hot, american chinese fusion', categories: ['Restaurant'], pos: {lat: 37.7611967, lng: -122.4218593}},
+    {name: 'Iza Ramen', desc: 'The best ramen outside of Japan', categories: ['Restaurant'], pos: {lat: 37.7717432, lng: -122.4325963}},
+    {name: 'Flora Grubb', desc: 'Coffee, nature, heated benches for your butt', categories: ['Cafe', 'Outdoor'], pos: {lat: 37.7397158, lng: -122.3924253}},
+    {name: 'Philz Coffee + Minnesota Steer project', desc: 'Get local coffee, get local art', categories: ['Cafe','Activity'], pos: {lat: 37.7543081, lng: -122.3918969}},
+    {name: 'SpeakEasy', desc: 'Get drunk, gamble, and live in 1920s', categories: ['Activity','Bar','Entertainment'], pos: {lat: -25.363, lng: 13.044}},
+    {name: 'Keiko A Nob Hill', desc: 'If you have money to burn, best food you\'ll ever have', categories: ['Restaurant'], pos: {lat: 37.7931154, lng: -122.4165049}},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant'], pos: {lat: 37.7576742, lng: -122.3922757}},
+    {name: 'Basa', desc: 'Best $8 sushi & poke', categories: ['Restaurant'], pos: {lat: 37.7527362, lng: -122.4155737}},
+    {name: 'Farmhouse', desc: 'Best Thai food with pretentious interior', categories: ['Restaurant'], pos: {lat: 37.7602217, lng: -122.4134743}},
+    {name: 'Nihon Whiskey', desc: 'Must go for whiskey lovers', categories: ['Bar'], pos: {lat: 37.7686563, lng: -122.4176993}},
+    {name: 'Limon Rotisserie', desc: 'Do yourself a favor and just get chicken & ceviche', categories: ['Restaurant'], pos: {lat: 37.7570572, lng: -122.4187627}},
+    {name: 'Alcatraz', desc: 'We haven\'t been but everyon says it\'s cool ¯\_(ツ)_/¯', categories: ['Activity'], pos: {lat: 37.8269817, lng: -122.4251442}},
+    {name: 'La Taqueria', desc: 'Best taco in San Francisco', categories: ['Restaurant'], pos: {lat: 37.7509003, lng:-122.4202754}},
+    {name: 'UtoEpia', desc: 'Get a massage, experience uTOEpia', categories: ['Activity'], pos: {lat: 37.7856572, lng:-122.4419387}},
+    {name: 'Golden Gate Park', desc: 'Get lost, it\'s big, and rid a Segway', categories: ['Outdoor'], pos: {lat: 37.7694246, lng:-122.4882001}},
+    {name: 'SFMoMA', desc: 'The only decent art museum in San Francisco', categories: ['Activity'], pos: {lat: 37.7857224, lng:-122.4032395}},
+    {name: 'Neighbor bakehouse', desc: 'Ditch Tartine, this one\'s better. Go early, or they sell out', categories: ['Cafe'], pos: {lat: 37.7596337, lng: -122.3903614}},
+    {name: 'House of Air', desc: 'Trampolines with a view', categories: ['Activity'], pos: {lat: 37.8049099, lng: -122.4710101}},
+    {name: 'ASIASF', desc: 'Alternative entertainment', categories: ['Entertainment', 'Bar', 'Restaurant'], pos: {lat: 37.7750472, lng: -122.4150207}},
+    {name: 'Dolores Park', desc: 'Meet weirdos', categories: ['Outdoor'], pos: {lat: 37.759621, lng:-122.4290978}},
+    {name: 'Noeteca', desc: 'Freshest French-inspired brunch', categories: ['Restaurant'], pos: {lat: 37.7445525, lng:-122.4264169}},
+    {name: 'Trolley', desc: 'Easiest way to become a stereotypical tourist', categories: ['Activity'], pos: {lat: 37.7850522, lng:-122.4083314}},
+    {name: 'Eiji', desc: 'Needs copy', categories: ['Activity'], pos: {lat:37.7640753, lng:-122.4328633}},
   ];
 
   this.$onInit = () => {
     this.resetFilters();
+  };
+
+  this.selected = (name)=> {
+    this.currentMarker = name;
   };
 
   this.resetFilters = () => {

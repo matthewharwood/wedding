@@ -68,6 +68,7 @@
 
     </div>
 
+
     <div class="row visit-subhead">
       <div class="col-12 col-md-10 offset-md-1">
         <h5 class="py-4">Daisy &amp; Matt's favorite places</h5>
@@ -86,5 +87,14 @@
 
       </div>
     </div>
+
   </div>
+<google-map selected="$ctrl.currentMarker" data="$ctrl.filteredPlacesList">
+  <div class="sub-navigation">
+    <filter-buttons data="filterItem" output="$ctrl.output(active)" ng-repeat="filterItem in $ctrl.filterList"></filter-buttons>
+  </div>
+  <div class="selections">
+    <place-item data="item" class="col-6" selected="$ctrl.selected(name)" ng-repeat="item in $ctrl.filteredPlacesList"></place-item>
+  </div>
+</google-map>
 </div>
