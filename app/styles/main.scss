@@ -3,6 +3,7 @@
 // endbower
 
 @import "./_typography.scss";
+@import "./_google-map.scss";
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
@@ -82,3 +83,11 @@ place-item  {
   min-height:100px;
 }
 
+
+// GOOGLE MAP
+
+#map {
+  width: 100%;
+  height: 400px;
+  background-color: grey;
+}

@@ -31,15 +31,13 @@ module.component('visitComponent', {
 
 module.component('filterButtons', {
   template: `
-  <ul class="list-inline list-unstyled">
-    <li class="list-inline-item">
+    <div class="list-inline-item">
       <label class="custom-control custom-checkbox">
         <input type="checkbox" class="custom-control-input" ng-model="$ctrl.data.active" ng-click="$ctrl.output()">
         <span class="custom-control-indicator"></span>
         <span class="custom-control-description">{{$ctrl.data.name}}</span>
       </label>
-    </li> 
-  </ul>
+    </div> 
   `,
   controller: FilterButtonsController,
   bindings: {
@@ -48,25 +46,82 @@ module.component('filterButtons', {
   }
 });
 
+module.component('googleMap', {
+  template: `
+    <ng-transclude></ng-transclude> 
+    <section class="full-bleed"></section>
+  `,
+  controller: GoogleMapController,
+  transclude: true,
+  bindings: {
+    selected: '<'
+  }
+});
+
+function GoogleMapController($element, $timeout) {
+  this.defaultMarker = {lat: -25.363, lng: 131.044};
+  this.$onInit = () => {
+    $timeout(()=> {
+      this.initMap();
+    }, 2000);
+  };
+
+  this.$onChanges = (changes) => {
+    let selected = changes.selected.currentValue;
+    if(selected){
+      console.log(selected);
+    }
+  };
+
+  this.initMap = () => {
+    console.log('init');
+    const uluru = {lat: -25.363, lng: 131.044};
+
+    const map = new google.maps.Map($element.find('section')[0], {
+      zoom: 4,
+      scrollwheel: false,
+      navigationControl: false,
+      mapTypeControl: false,
+      scaleControl: false,
+      draggable: false,
+      center: uluru
+    });
+
+
+
+    var infowindow = new google.maps.InfoWindow({
+      content: `<a href="#">Uluru</a>`
+    });
+
+    const marker = new google.maps.Marker({
+      position: uluru,
+      map: map,
+      title: 'Uluru (Ayers Rock)'
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+}
 
 module.component('placeItem', {
   template: `
-    <div>{{$ctrl.data.name}}</div>
+    <div ng-click="$ctrl.selected({name: $ctrl.data})">{{$ctrl.data.name}}</div>
   `,
   controller: PlaceItemController,
   bindings: {
     data: '<',
-    filters: '<'
+    filters: '<',
+    selected: '&'
   }
 });
+
 function PlaceItemController() {
   this.data = this.data || undefined;
   this.filters = this.filters || undefined;
-
-  this.$onInit = () => {
-
-  }
+  this.selected = this.selected || undefined;
 }
+
 function FilterButtonsController() {
   this.data = this.data || undefined;
 }
@@ -114,6 +169,10 @@ function VisitController() {
 
   this.$onInit = () => {
     this.resetFilters();
+  };
+
+  this.selected = (name)=> {
+    this.currentMarker = name;
   };
 
   this.resetFilters = () => {
