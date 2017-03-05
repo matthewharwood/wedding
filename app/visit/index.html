@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-<google-map selected="$ctrl.currentMarker">
+<google-map selected="$ctrl.currentMarker" data="$ctrl.filteredPlacesList">
   <div class="sub-navigation">
     <filter-buttons data="filterItem" output="$ctrl.output(active)" ng-repeat="filterItem in $ctrl.filterList"></filter-buttons>
   </div>

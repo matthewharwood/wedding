@@ -54,12 +54,17 @@ module.component('googleMap', {
   controller: GoogleMapController,
   transclude: true,
   bindings: {
-    selected: '<'
+    selected: '<',
+    data: '<',
   }
 });
 
 function GoogleMapController($element, $timeout) {
+  this.data = this.data || undefined;
+  this.map = undefined;
+  this.markers = [];
   this.defaultMarker = {lat: -25.363, lng: 131.044};
+
   this.$onInit = () => {
     $timeout(()=> {
       this.initMap();
@@ -67,39 +72,57 @@ function GoogleMapController($element, $timeout) {
   };
 
   this.$onChanges = (changes) => {
-    let selected = changes.selected.currentValue;
-    if(selected){
-      console.log(selected);
+
+    if(changes.selected && changes.selected.currentValue){
+      console.log(changes.selected.currentValue);
+    }
+    if(changes.data && changes.data.currentValue){
+      this.data = changes.data.currentValue;
+      this.makeMarkers();
     }
   };
 
   this.initMap = () => {
     console.log('init');
-    const uluru = {lat: -25.363, lng: 131.044};
 
-    const map = new google.maps.Map($element.find('section')[0], {
+    this.map = new google.maps.Map($element.find('section')[0], {
       zoom: 4,
       scrollwheel: false,
       navigationControl: false,
       mapTypeControl: false,
       scaleControl: false,
       draggable: false,
-      center: uluru
+      center: this.defaultMarker
     });
+    this.makeMarkers();
+  };
 
+  this.setMapOnAll = (map) => {
+    if(!this.markers.length) return;
+    for (let i = 0; i < this.markers.length; i++) {
+      this.markers[i].marker.setMap(map);
+    }
+  };
 
-
-    var infowindow = new google.maps.InfoWindow({
-      content: `<a href="#">Uluru</a>`
+  this.makeMarkers = () => {
+    this.setMapOnAll(null);
+    this.markers = this.data.map(i => {
+      return {
+        data: i,
+        info: new google.maps.InfoWindow({
+          content: `<a href="#">${i.name}</a>`
+        }),
+        marker: new google.maps.Marker({
+          position: i.pos,
+          map: this.map,
+          title: `${i.name}`
+        })
+      };
     });
-
-    const marker = new google.maps.Marker({
-      position: uluru,
-      map: map,
-      title: 'Uluru (Ayers Rock)'
-    });
-    marker.addListener('click', function() {
-      infowindow.open(map, marker);
+    this.listeners = this.markers.map(i => {
+      return i.marker.addListener('click', ()=> {
+        i.info.open(this.map, i.marker);
+      });
     });
   }
 }
@@ -138,33 +161,33 @@ function VisitController() {
   ];
 
   this.places = [
-    {name: 'Bernal Heights Park', desc: 'Our favorite San Francisco vantage point', categories: ['Outdoors']},
-    {name: 'Zero Zero', desc: 'Where we first met', categories: ['Restaurant']},
-    {name: 'Trouble Coffee + General Store', desc: 'Ultimate hipster experience near the ocean', categories: ['Cafe', 'Activity']},
-    {name: 'Mission Chinese', desc: 'Hot hot, american chinese fusion', categories: ['Restaurant']},
-    {name: 'Iza Ramen', desc: 'The best ramen outside of Japan', categories: ['Restaurant']},
-    {name: 'Flora Grubb', desc: 'Coffee, nature, heated benches for your butt', categories: ['Cafe', 'Outdoor']},
-    {name: 'Philz Coffee + Minnesota Steer project', desc: 'Get local coffee, get local art', categories: ['Cafe','Activity']},
-    {name: 'SpeakEasy', desc: 'Get drunk, gamble, and live in 1920s', categories: ['Activity','Bar','Entertainment']},
-    {name: 'Keiko A Nob Hill', desc: 'If you have money to burn, best food you\'ll ever have', categories: ['Restaurant']},
-    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant']},
-    {name: 'Basa', desc: 'Best $8 sushi & poke', categories: ['Restaurant']},
-    {name: 'Farmhouse', desc: 'Best Thai food with pretentious interior', categories: ['Restaurant']},
-    {name: 'Nihon Whiskey', desc: 'Must go for whiskey lovers', categories: ['Bar']},
-    {name: 'Limon Rotisserie', desc: 'Do yourself a favor and just get chicken & ceviche', categories: ['Restaurant']},
-    {name: 'Alcatraz', desc: 'We haven\'t been but everyon says it\'s cool ¯\_(ツ)_/¯', categories: ['Activity']},
-    {name: 'La Taqueria', desc: 'Best taco in San Francisco', categories: ['Restaurant']},
-    {name: 'UtoEpia', desc: 'Get a massage, experience uTOEpia', categories: ['Activity']},
-    {name: 'Golden Gate Park', desc: 'Get lost, it\'s big, and rid a Segway', categories: ['Outdoor']},
-    {name: 'SFMoMA', desc: 'The only decent art museum in San Francisco', categories: ['Activity']},
-    {name: 'Neighbor bakehouse', desc: 'Ditch Tartine, this one\'s better. Go early, or they sell out', categories: ['Cafe']},
-    {name: 'House of Air', desc: 'Trampolines with a view', categories: ['Activity']},
-    {name: 'ASIASF', desc: 'Alternative entertainment', categories: ['Entertainment', 'Bar', 'Restaurant']},
-    {name: 'Dolores Park', desc: 'Meet weirdos', categories: ['Outdoor']},
-    {name: 'Noeteca', desc: 'Freshest French-inspired brunch', categories: ['Restaurant']},
-    {name: 'Mac Daddy', desc: 'Gourmet macaroni and cheese', categories: ['Restaurant']},
-    {name: 'Trolley', desc: 'Easiest way to become a stereotypical tourist', categories: ['Activity']},
-    {name: 'Eiji', desc: 'Needs copy', categories: ['Activity']},
+    {name: 'Bernal Heights Park', desc: 'Our favorite San Francisco vantage point', categories: ['Outdoors'], pos: {lat: -25.363, lng: 131.044}},
+    {name: 'Zero Zero', desc: 'Where we first met', categories: ['Restaurant'], pos: {lat: -25.363, lng: 131.044}},
+    {name: 'Trouble Coffee + General Store', desc: 'Ultimate hipster experience near the ocean', categories: ['Cafe', 'Activity'], pos: {lat: -15.363, lng: 131.044}},
+    {name: 'Mission Chinese', desc: 'Hot hot, american chinese fusion', categories: ['Restaurant'], pos: {lat: -25.363, lng: 111.044}},
+    {name: 'Iza Ramen', desc: 'The best ramen outside of Japan', categories: ['Restaurant'], pos: {lat: -25.363, lng: 101.044}},
+    {name: 'Flora Grubb', desc: 'Coffee, nature, heated benches for your butt', categories: ['Cafe', 'Outdoor'], pos: {lat: -35.363, lng: 131.044}},
+    {name: 'Philz Coffee + Minnesota Steer project', desc: 'Get local coffee, get local art', categories: ['Cafe','Activity'], pos: {lat: -26.363, lng: 131.044}},
+    {name: 'SpeakEasy', desc: 'Get drunk, gamble, and live in 1920s', categories: ['Activity','Bar','Entertainment'], pos: {lat: -25.363, lng: 13.044}},
+    {name: 'Keiko A Nob Hill', desc: 'If you have money to burn, best food you\'ll ever have', categories: ['Restaurant'], pos: {lat: -22.363, lng: 131.044}},
+    {name: 'Piccino', desc: 'Go for brunch, get a pizza', categories: ['Cafe', 'Restaurant'], pos: {lat: 25.363, lng: 14.044}},
+    {name: 'Basa', desc: 'Best $8 sushi & poke', categories: ['Restaurant'], pos: {lat: 25.363, lng: 131.044}},
+    {name: 'Farmhouse', desc: 'Best Thai food with pretentious interior', categories: ['Restaurant'], pos: {lat: -35.363, lng: 131.044}},
+    {name: 'Nihon Whiskey', desc: 'Must go for whiskey lovers', categories: ['Bar'], pos: {lat: -26, lng: 130.044}},
+    {name: 'Limon Rotisserie', desc: 'Do yourself a favor and just get chicken & ceviche', categories: ['Restaurant'], pos: {lat: -56.363, lng: 131.044}},
+    {name: 'Alcatraz', desc: 'We haven\'t been but everyon says it\'s cool ¯\_(ツ)_/¯', categories: ['Activity'], pos: {lat: -45.363, lng: 131.044}},
+    {name: 'La Taqueria', desc: 'Best taco in San Francisco', categories: ['Restaurant'], pos: {lat: -25.363, lng: 141.044}},
+    {name: 'UtoEpia', desc: 'Get a massage, experience uTOEpia', categories: ['Activity'], pos: {lat: -25.363, lng: 161.044}},
+    {name: 'Golden Gate Park', desc: 'Get lost, it\'s big, and rid a Segway', categories: ['Outdoor'], pos: {lat: -35.363, lng: 131.044}},
+    {name: 'SFMoMA', desc: 'The only decent art museum in San Francisco', categories: ['Activity'], pos: {lat: 15.363, lng: 131.044}},
+    {name: 'Neighbor bakehouse', desc: 'Ditch Tartine, this one\'s better. Go early, or they sell out', categories: ['Cafe'], pos: {lat: 35.363, lng: 131.044}},
+    {name: 'House of Air', desc: 'Trampolines with a view', categories: ['Activity'], pos: {lat: -22.363, lng: 131.044}},
+    {name: 'ASIASF', desc: 'Alternative entertainment', categories: ['Entertainment', 'Bar', 'Restaurant'], pos: {lat: 5.363, lng: 131.044}},
+    {name: 'Dolores Park', desc: 'Meet weirdos', categories: ['Outdoor'], pos: {lat: -13.363, lng: 131.044}},
+    {name: 'Noeteca', desc: 'Freshest French-inspired brunch', categories: ['Restaurant'], pos: {lat: -14.363, lng: 131.044}},
+    {name: 'Mac Daddy', desc: 'Gourmet macaroni and cheese', categories: ['Restaurant'], pos: {lat: -16.363, lng: 131.044}},
+    {name: 'Trolley', desc: 'Easiest way to become a stereotypical tourist', categories: ['Activity'], pos: {lat: -22.363, lng: 1.044}},
+    {name: 'Eiji', desc: 'Needs copy', categories: ['Activity'], pos: {lat: -5.363, lng: 1.044}},
   ];
 
   this.$onInit = () => {
