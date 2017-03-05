@@ -11,6 +11,7 @@ google-map {
 
   }
 }
+
 .sub-navigation {
   position: absolute;
   left: 0;
@@ -26,4 +27,11 @@ google-map {
   top:50px;
   width: 380px;
   z-index: 10;
+}
+
+.container-parent {
+  position: relative;
+  height: auto;
+  width: 100%;
+  display: block;
 }

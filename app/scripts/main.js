@@ -210,7 +210,7 @@ function GoogleMapController($element, $timeout) {
 
   this.makeMarkers = () => {
     this.setMapOnAll(null);
-    this.markers = this.data.map(i => {
+    this.markers = this.data.map((i, idx) => {
       return {
         data: i,
         info: new google.maps.InfoWindow({
@@ -220,22 +220,10 @@ function GoogleMapController($element, $timeout) {
           position: i.pos,
           map: this.map,
           title: `${i.name}`,
-          icon: 'http://placekitten.com/g/30/30'
+          icon: `../images/_markers/marker-${idx+1}.png`
         })
       };
     });
-    // the smooth zoom function
-    this.smoothZoom = (map, max, cnt)=> {
-      if (cnt >= max) return;
-
-      let z = google.maps.event.addListener(map, 'zoom_changed', function(event){
-        google.maps.event.removeListener(z);
-        smoothZoom(map, max, cnt + 1);
-      });
-
-      setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
-
-    };
 
     this.listeners = this.markers.map(i => {
 
@@ -270,8 +258,9 @@ module.component('visitComponent', {
   controller: VisitController,
 });
 
-function VisitController() {
+function VisitController($window, $scope, $document) {
   this.filteredPlacesList = [];
+
   this.filterList = [
     {name: 'Restaurant', active: false},
     {name: 'Cafe', active: false},
@@ -312,6 +301,25 @@ function VisitController() {
 
   this.$onInit = () => {
     this.resetFilters();
+    this.scrollSpy();
+  };
+  this.scrollSpy = () => {
+    // let doc = angular.element($document);
+    // let win = angular.element($window);
+    // let that = this;
+    //
+    // win.on('scroll', function(ev) {
+    //   if ((this.innerHeight + this.pageYOffset) >= doc[0].body.offsetHeight) {
+    //     console.log('your at bottom');
+    //     that.mapFixed = true;
+    //     $scope.$digest();
+    //   } else {
+    //     if(that.mapFixed) {
+    //       that.mapFixed = false;
+    //       $scope.$digest();
+    //     }
+    //   }
+    // });
   };
 
   this.selected = (name)=> {
