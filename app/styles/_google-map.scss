@@ -17,21 +17,18 @@ google-map {
   }
 }
 
-.sub-navigation {
-  position: absolute;
-  left: 0;
-  top:0;
-  z-index: 10;
-  height: 50px;
-  width: 100%;
-  background: #f7f7f7;
+.fixed-position{
+  position: fixed;
 }
+
 .selections {
   position: absolute;
   left: 0;
-  top:50px;
+  top: 62px;
   width: 380px;
   z-index: 10;
+  background-color: #EAE8EA;
+  border-right: 1px solid rgba(0,0,0,0.15);
 }
 
 .container-parent {
@@ -39,4 +36,77 @@ google-map {
   height: auto;
   width: 100%;
   display: block;
+}
+
+.attraction-list{
+  width: 380px;
+  padding: 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+
+  &.active{
+    background-color: white;
+  }
+
+  .desc{
+    margin-bottom: 4px;
+  }
+
+  .category-pill{
+    display: inline-block;
+    background-color: #417505;
+    color: #fff;
+    height: 20px;
+    border-radius: 10px;
+    margin: 0 4px 0 0;
+    vertical-align: middle;
+    padding: 0 10px 0 10px;
+    font-size: 10px;
+    line-height: 18px;
+  }
+
+}
+
+.sub-navigation {
+  position: fixed;
+  right: 10px;
+  top: 72px;
+  z-index: 10;
+  height: auto;
+  width: 160px;
+  background-color: #fff;
+  padding: 10px 16px 10px 16px;
+  border-radius: 2px;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.1);
+}
+
+
+.custom-control-category{
+  font-size: 13px;
+}
+
+.custom-control{
+  display: block;
+  width: 100%;
+}
+
+.minimal-checkbox {
+
+  .custom-control-input:checked ~ .custom-control-indicator {
+    background-image: url("../images/_icons/checkmark.png");
+    background-color: #fff;
+  }
+
+
+  .custom-control-input:focus  ~ .custom-control-indicator {
+    // the mixin is not used here to make sure there is feedback
+    box-shadow: none;
+  }
+
+  .custom-control-input:indeterminate ~ .custom-control-indicator {
+    background-color: #fff;
+  }
+
+  .custom-control-indicator {
+    background-color: #fff;
+  }
 }

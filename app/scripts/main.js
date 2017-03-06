@@ -42,15 +42,7 @@ function HomeController() {
 
 
 module.component('filterButtons', {
-  template: `
-    <div class="list-inline-item">
-      <label class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" ng-model="$ctrl.data.active" ng-click="$ctrl.output()">
-        <span class="custom-control-indicator"></span>
-        <span class="custom-control-description">{{$ctrl.data.name}}</span>
-      </label>
-    </div> 
-  `,
+  templateUrl: 'attraction/filter-buttons.html',
   controller: FilterButtonsController,
   bindings: {
     data: '=',
@@ -65,7 +57,7 @@ function FilterButtonsController() {
 module.component('googleMap', {
   template: `
     <ng-transclude></ng-transclude> 
-    <section class="full-bleed"></section>
+    <div class="fixed-position full-bleed"><section class="full-bleed"></section></div>
   `,
   controller: GoogleMapController,
   transclude: true,
@@ -251,9 +243,7 @@ function GoogleMapController($element, $timeout) {
 }
 
 module.component('placeItem', {
-  template: `
-    <div ng-click="$ctrl.selected({name: $ctrl.data})">{{$ctrl.data.name}}</div>
-  `,
+  templateUrl: 'attraction/place-item.html',
   controller: PlaceItemController,
   bindings: {
     data: '<',
