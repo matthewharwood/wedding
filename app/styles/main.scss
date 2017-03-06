@@ -1,16 +1,15 @@
 // bower:scss
 @import "bower_components/bootstrap/scss/bootstrap.scss";
 // endbower
-
 @import "./_typography.scss";
 @import "./_google-map.scss";
+
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
   color: #000;
   padding: 0.2em 0;
 }
-
 
 /* Customize container */
 @media (min-width: 48em) {
@@ -19,37 +18,37 @@
   }
 }
 
-.navbar{
-  border-bottom: 1px solid rgba(0,0,0,0.15);
+.navbar {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.footer{
-  border-top: 1px solid rgba(0,0,0,0.15);
+.footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .home-divider {
   position: relative;
-  &::after{
+  &::after {
     position: absolute;
     content: "";
     height: 1px;
     width: 100%;
-    background: rgba(0,0,0,.15);
+    background: rgba(0, 0, 0, .15);
   }
 }
 
 .visit-divider {
-  &::after{
+  &::after {
     position: relative;
     content: "";
     height: 1px;
     width: 100%;
-    background: rgba(0,0,0,.15);
+    background: rgba(0, 0, 0, .15);
   }
 }
 
 
-.cover-img{
+.cover-img {
   height: 75vh;
   background-size: cover;
   background-repeat: no-repeat;
@@ -58,42 +57,48 @@
   padding-top: 80px;
   text-align: center;
   color: #fff;
+  animation: fadein 2s;
 }
 
-.home-img{
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+.home-img {
   background-image: url("../images/home.jpg");
 }
 
-.visit-img{
+.visit-img {
   background-image: url("../images/visit.jpg");
 }
 
-.photo-img{
+.photo-img {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
 }
 
-#photo-4{
+#photo-4 {
   margin-top: -15%;
 }
 
-#photo-7{
+#photo-7 {
   background-image: url("../images/photo-7.jpg");
 }
 
-#photo-9{
+#photo-9 {
   background-image: url("../images/photo-9.jpg");
 }
 
 // VISIT FILTER ACTIVITIES STYLES
-place-item  {
+place-item {
   position: relative;
   display: block;
   background: #ccc;
-  min-height:100px;
+  min-height: 100px;
 }
-
 
 // GOOGLE MAP
 

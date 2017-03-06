@@ -6,13 +6,21 @@ module.config(function($urlRouterProvider, $stateProvider) {
   routes.push({
     name: 'home',
     url: '/',
-    templateUrl: './home/index.html'
+    templateUrl: './home/index.html',
+    controller: HomeController,
+    controllerAs: '$ctrl'
   });
 
   routes.push({
     name: 'visit',
     url: '/visit',
     template: '<visit-component></visit-component>',
+  });
+
+  routes.push({
+    name: 'attraction',
+    url: '/attraction',
+    template: '<attraction-component></attraction-component>',
   });
 
   routes.push({
@@ -24,6 +32,13 @@ module.config(function($urlRouterProvider, $stateProvider) {
   routes.forEach(i => $stateProvider.state(i));
 });
 
+function HomeController() {
+  this.places = [
+    {name: 'San Francisco City Hall', desc: 'Our favorite San Francisco vantage point',link: 'https://goo.gl/maps/33KAL4uih972', categories: ['Outdoors'], pos: {lat: 37.7792639, lng:-122.4214586}},
+    {name: 'Trou Normand', desc: 'Where we first met', categories: ['Restaurant'],link: 'https://goo.gl/maps/nnNeSH7ZdVx', pos: {lat: 37.7866685, lng: -122.4019677}},
+    {name: 'Monroe', desc: 'Ultimate hipster experience near the ocean', categories: ['Cafe', 'Activity'],link: 'https://goo.gl/maps/EQpnyvbU6DL2', pos: {lat: 37.7979009, lng: -122.4071291}}
+  ]
+}
 
 
 module.component('filterButtons', {
@@ -252,13 +267,12 @@ function PlaceItemController() {
   this.filters = this.filters || undefined;
   this.selected = this.selected || undefined;
 }
-
-module.component('visitComponent', {
-  templateUrl:'./visit/index.html',
-  controller: VisitController,
+module.component('attractionComponent', {
+  templateUrl:'./attraction/index.html',
+  controller: AttractionController,
 });
 
-function VisitController($window, $scope, $document) {
+function AttractionController() {
   this.filteredPlacesList = [];
 
   this.filterList = [
@@ -301,25 +315,6 @@ function VisitController($window, $scope, $document) {
 
   this.$onInit = () => {
     this.resetFilters();
-    this.scrollSpy();
-  };
-  this.scrollSpy = () => {
-    // let doc = angular.element($document);
-    // let win = angular.element($window);
-    // let that = this;
-    //
-    // win.on('scroll', function(ev) {
-    //   if ((this.innerHeight + this.pageYOffset) >= doc[0].body.offsetHeight) {
-    //     console.log('your at bottom');
-    //     that.mapFixed = true;
-    //     $scope.$digest();
-    //   } else {
-    //     if(that.mapFixed) {
-    //       that.mapFixed = false;
-    //       $scope.$digest();
-    //     }
-    //   }
-    // });
   };
 
   this.selected = (name)=> {
@@ -336,9 +331,9 @@ function VisitController($window, $scope, $document) {
     const doesPlaceIncludeItem = (place, item) => place.categories.includes(item);
 
     let finalFilter = this.places
-            .filter(place => removeFalse(this.filterList)
-            .map(getFilterByName)
-            .some(item => doesPlaceIncludeItem(place, item)));
+      .filter(place => removeFalse(this.filterList)
+        .map(getFilterByName)
+        .some(item => doesPlaceIncludeItem(place, item)));
 
     if(finalFilter.length > 0 ) {
       this.filteredPlacesList = finalFilter;
@@ -346,4 +341,17 @@ function VisitController($window, $scope, $document) {
       this.resetFilters();
     }
   }
+}
+
+module.component('visitComponent', {
+  templateUrl:'./visit/index.html',
+  controller: VisitController,
+});
+
+function VisitController() {
+  this.places = [
+    {name: 'San Francisco City Hall', desc: 'Our favorite San Francisco vantage point',link: 'https://goo.gl/maps/33KAL4uih972', categories: ['Outdoors'], pos: {lat: 37.7792639, lng:-122.4214586}},
+    {name: 'Trou Normand', desc: 'Where we first met', categories: ['Restaurant'],link: 'https://goo.gl/maps/nnNeSH7ZdVx', pos: {lat: 37.7866685, lng: -122.4019677}},
+    {name: 'Monroe', desc: 'Ultimate hipster experience near the ocean', categories: ['Cafe', 'Activity'],link: 'https://goo.gl/maps/EQpnyvbU6DL2', pos: {lat: 37.7979009, lng: -122.4071291}}
+  ]
 }

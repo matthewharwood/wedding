@@ -8,7 +8,12 @@ google-map {
     height: 100%;
     width: 100%;
     display: block;
+  }
 
+  &.full-bleed {
+    height: 100vh;
+    width: 100%;
+    display: block;
   }
 }
 

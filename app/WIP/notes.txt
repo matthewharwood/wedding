@@ -1,0 +1,18 @@
+  this.scrollSpy = () => {
+    // let doc = angular.element($document);
+    // let win = angular.element($window);
+    // let that = this;
+    //
+    // win.on('scroll', function(ev) {
+    //   if ((this.innerHeight + this.pageYOffset) >= doc[0].body.offsetHeight) {
+    //     console.log('your at bottom');
+    //     that.mapFixed = true;
+    //     $scope.$digest();
+    //   } else {
+    //     if(that.mapFixed) {
+    //       that.mapFixed = false;
+    //       $scope.$digest();
+    //     }
+    //   }
+    // });
+  };
