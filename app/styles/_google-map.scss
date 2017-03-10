@@ -1,42 +1,140 @@
 google-map {
-  width: 100%;
-  position: relative;
   display: block;
   height: 80vh;
+  position: relative;
+  width: 100%;
 
   .full-bleed {
+    display: block;
     height: 100%;
     width: 100%;
-    display: block;
   }
 
   &.full-bleed {
+    display: block;
     height: 100vh;
     width: 100%;
-    display: block;
+  }
+  &.no-fixed {
+    .fixed-position {
+      position: relative;
+    }
+  }
+}
+
+.fixed-position {
+  position: fixed;
+}
+
+.selections {
+  background-color: #EAE8EA;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  left: 0;
+  position: absolute;
+  top: 62px;
+  width: 380px;
+  z-index: 10;
+
+}
+
+.selections::after {
+  background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%);
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 );
+  position: fixed;
+  content: '';
+  width: 380px;
+  left: 0;
+  bottom:0;
+  height: 72px;
+  z-index:1000;
+}
+.container-parent {
+  display: block;
+  height: auto;
+  position: relative;
+  width: 100%;
+}
+
+.attraction-list {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  padding: 20px;
+  width: 380px;
+
+  &:hover {
+    background-color: darken(white, 20%);
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+
+
+  .desc {
+    margin-bottom: 4px;
+  }
+
+  .category-pill {
+    background-color: #417505;
+    border-radius: 10px;
+    color: #fff;
+    display: inline-block;
+    font-size: 10px;
+    height: 20px;
+    line-height: 18px;
+    margin: 0 4px 0 0;
+    padding: 0 10px 0 10px;
+    vertical-align: middle;
+  }
+
+}
+place-item {
+  &.active {
+    .attraction-list {
+      background-color: darken(white, 25%);
+    }
   }
 }
 
 .sub-navigation {
-  position: absolute;
-  left: 0;
-  top:0;
-  z-index: 10;
-  height: 50px;
-  width: 100%;
-  background: #f7f7f7;
-}
-.selections {
-  position: absolute;
-  left: 0;
-  top:50px;
-  width: 380px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+  height: auto;
+  padding: 10px 16px 10px 16px;
+  position: fixed;
+  right: 10px;
+  top: 72px;
+  width: 160px;
   z-index: 10;
 }
 
-.container-parent {
-  position: relative;
-  height: auto;
-  width: 100%;
+.custom-control-category {
+  font-size: 13px;
+}
+
+.custom-control {
   display: block;
+  width: 100%;
+}
+
+.minimal-checkbox {
+
+  .custom-control-input:checked ~ .custom-control-indicator {
+    background-color: #fff;
+    background-image: url("../images/_icons/checkmark.png");
+  }
+
+  .custom-control-input:focus ~ .custom-control-indicator {
+    // the mixin is not used here to make sure there is feedback
+    box-shadow: none;
+  }
+
+  .custom-control-input:indeterminate ~ .custom-control-indicator {
+    background-color: #fff;
+  }
+
+  .custom-control-indicator {
+    background-color: #fff;
+  }
 }

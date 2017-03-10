@@ -18,6 +18,20 @@ body{
 	background-color: #EAE8EA !important;
 }
 
+h5{
+	-webkit-font-smoothing: antialiased;
+	font-family: 'Times New Roman', serif;
+	font-style: italic;
+	font-size: 24px;
+}
+
+h6{
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 13px;
+}
+
+
 a{
 	color: #417505;
 	font-weight: bold;
@@ -51,12 +65,6 @@ li{
 		font-size: 32px;
 	}
 
-	h6{
-		font-size: 13px;
-		text-transform: uppercase;
-		font-weight: bold;
-	}
-
 	p{
 		position: relative;
 
@@ -76,52 +84,10 @@ li{
 	}
 
 	.col-10{
-		h5{
-			-webkit-font-smoothing: antialiased;
-			font-family: 'Times New Roman', serif;
-			font-style: italic;
-			font-size: 24px;
-		}
-
-		h6{
-			font-weight: bold;
-			text-transform: uppercase;
-			font-size: 13px;
-		}
 
 		.attire{
 			margin-bottom: 0;
 		}
-	}
-}
-
-.visit-subhead{
-	h5{
-		-webkit-font-smoothing: antialiased;
-		font-family: 'Times New Roman', serif;
-		font-style: italic;
-		font-size: 24px;		
-	}
-
-	h6{
-		font-weight: bold;
-		text-transform: uppercase;
-		font-size: 13px;
-	}
-}
-
-.photo-text{
-	h5{
-		-webkit-font-smoothing: antialiased;
-		font-family: 'Times New Roman', serif;
-		font-style: italic;
-		font-size: 24px;		
-	}
-
-	h6{
-		font-weight: bold;
-		text-transform: uppercase;
-		font-size: 13px;
 	}
 }
 

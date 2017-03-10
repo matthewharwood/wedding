@@ -42,15 +42,7 @@ function HomeController() {
 
 
 module.component('filterButtons', {
-  template: `
-    <div class="list-inline-item">
-      <label class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" ng-model="$ctrl.data.active" ng-click="$ctrl.output()">
-        <span class="custom-control-indicator"></span>
-        <span class="custom-control-description">{{$ctrl.data.name}}</span>
-      </label>
-    </div> 
-  `,
+  templateUrl: 'attraction/filter-buttons.html',
   controller: FilterButtonsController,
   bindings: {
     data: '=',
@@ -65,7 +57,7 @@ function FilterButtonsController() {
 module.component('googleMap', {
   template: `
     <ng-transclude></ng-transclude> 
-    <section class="full-bleed"></section>
+    <div class="fixed-position full-bleed"><section class="full-bleed"></section></div>
   `,
   controller: GoogleMapController,
   transclude: true,
@@ -91,7 +83,6 @@ function GoogleMapController($element, $timeout) {
   this.$onChanges = (changes) => {
 
     if(changes.selected && changes.selected.currentValue){
-      console.log(changes.selected.currentValue);
       this.setCenter();
     }
     if(changes.data && changes.data.currentValue){
@@ -212,7 +203,6 @@ function GoogleMapController($element, $timeout) {
   };
 
   this.setCenter = () => {
-    console.log('center', this.selected.pos.lat, this.selected.pos.lng)
     this.map.setCenter(new google.maps.LatLng(this.selected.pos.lat, this.selected.pos.lng));
   };
 
@@ -251,9 +241,7 @@ function GoogleMapController($element, $timeout) {
 }
 
 module.component('placeItem', {
-  template: `
-    <div ng-click="$ctrl.selected({name: $ctrl.data})">{{$ctrl.data.name}}</div>
-  `,
+  templateUrl: 'attraction/place-item.html',
   controller: PlaceItemController,
   bindings: {
     data: '<',
@@ -272,16 +260,16 @@ module.component('attractionComponent', {
   controller: AttractionController,
 });
 
-function AttractionController() {
+function AttractionController($scope) {
   this.filteredPlacesList = [];
 
   this.filterList = [
-    {name: 'Restaurant', active: false},
-    {name: 'Cafe', active: false},
-    {name: 'Outdoor', active: false},
-    {name: 'Entertainment', active: false},
-    {name: 'Activity', active: false},
-    {name: 'Bar', active: false}
+    {name: 'Restaurant', active: true},
+    {name: 'Cafe', active: true},
+    {name: 'Outdoor', active: true},
+    {name: 'Entertainment', active: true},
+    {name: 'Activity', active: true},
+    {name: 'Bar', active: true}
   ];
 
   this.places = [
@@ -318,6 +306,7 @@ function AttractionController() {
   };
 
   this.selected = (name)=> {
+    console.log(name, 'name');
     this.currentMarker = name;
   };
 
@@ -328,12 +317,12 @@ function AttractionController() {
   this.output = () => {
     const getFilterByName = (i) => i.name;
     const removeFalse = (item) => item.filter(item => item.active);
-    const doesPlaceIncludeItem = (place, item) => place.categories.includes(item);
+    const doesPlaceIncludeName = (place, name) => place.categories.includes(name);
 
     let finalFilter = this.places
       .filter(place => removeFalse(this.filterList)
         .map(getFilterByName)
-        .some(item => doesPlaceIncludeItem(place, item)));
+        .some(name => doesPlaceIncludeName(place, name)));
 
     if(finalFilter.length > 0 ) {
       this.filteredPlacesList = finalFilter;
