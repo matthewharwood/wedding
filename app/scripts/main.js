@@ -318,12 +318,12 @@ function AttractionController($scope) {
   this.output = () => {
     const getFilterByName = (i) => i.name;
     const removeFalse = (item) => item.filter(item => item.active);
-    const doesPlaceIncludeItem = (place, item) => place.categories.includes(item);
+    const doesPlaceIncludeName = (place, name) => place.categories.includes(name);
 
     let finalFilter = this.places
       .filter(place => removeFalse(this.filterList)
         .map(getFilterByName)
-        .some(item => doesPlaceIncludeItem(place, item)));
+        .some(name => doesPlaceIncludeName(place, name)));
 
     if(finalFilter.length > 0 ) {
       this.filteredPlacesList = finalFilter;
