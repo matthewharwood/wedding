@@ -355,3 +355,37 @@ function VisitController() {
     {name: 'Monroe', desc: 'Ultimate hipster experience near the ocean', categories: ['Cafe', 'Activity'],link: 'https://goo.gl/maps/EQpnyvbU6DL2', pos: {lat: 37.7979009, lng: -122.4071291}}
   ]
 }
+
+module.component('countDownComponent', {
+  template: ` <div class="pl-3">Happening in {{$ctrl.diffDays}} days {{$ctrl.hoursLeft}} hours {{$ctrl.minsLeft}} minutes {{$ctrl.secondsLeft}} seconds</div>`,
+  controller: CountDownController
+});
+
+function CountDownController($interval) {
+  const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+  const oneDay = 24*60*60*1000;
+  const firstDate = new Date();
+  const secondDate = new Date('5/25/2017');
+
+
+  this.diffInDays = (a, b) => {
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  };
+
+  this.$onInit = () => {
+    this.diffDays = this.diffInDays(firstDate, secondDate);
+    this.hoursLeft = firstDate.getHours();
+    this.minsLeft = firstDate.getMinutes();
+    this.secondsLeft = firstDate.getSeconds();
+
+    $interval(()=> {
+      const quickDate = new Date();
+      this.secondsLeft = -quickDate.getSeconds() + 60;
+      this.minsLeft = -quickDate.getMinutes() + 60;
+      this.hoursLeft = -quickDate.getHours() + 24;
+    },1000)
+  }
+}
