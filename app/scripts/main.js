@@ -262,16 +262,16 @@ module.component('attractionComponent', {
   controller: AttractionController,
 });
 
-function AttractionController() {
+function AttractionController($scope) {
   this.filteredPlacesList = [];
 
   this.filterList = [
-    {name: 'Restaurant', active: false},
-    {name: 'Cafe', active: false},
-    {name: 'Outdoor', active: false},
-    {name: 'Entertainment', active: false},
-    {name: 'Activity', active: false},
-    {name: 'Bar', active: false}
+    {name: 'Restaurant', active: true},
+    {name: 'Cafe', active: true},
+    {name: 'Outdoor', active: true},
+    {name: 'Entertainment', active: true},
+    {name: 'Activity', active: true},
+    {name: 'Bar', active: true}
   ];
 
   this.places = [
