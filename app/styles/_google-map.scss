@@ -34,7 +34,8 @@ google-map {
   top: 62px;
   width: 380px;
   z-index: 10;
-
+  padding-bottom: 100px;
+  min-height: 100%;
 }
 
 .selections::after {

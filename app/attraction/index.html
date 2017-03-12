@@ -3,6 +3,10 @@
     <filter-buttons data="filterItem" output="$ctrl.output(active)" ng-repeat="filterItem in $ctrl.filterList"></filter-buttons>
   </div>
   <div class="selections">
-    <place-item data="item" ng-class="{'active': ($ctrl.currentMarker.name === item.name)}"selected="$ctrl.selected(name)" ng-repeat="item in $ctrl.filteredPlacesList"></place-item>
+    <place-item data="item"  selected="$ctrl.selected(name)" ng-repeat="item in $ctrl.filteredPlacesList"></place-item>
   </div>
 </google-map>
+<div class="modal-new" ng-if="$ctrl.modal">
+  <button ng-click="$ctrl.modal = false;">x</button>
+  <p>Im a modal</p>
+</div>

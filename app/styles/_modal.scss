@@ -1,0 +1,10 @@
+.modal-new {
+  width: 500px;
+  height: 500px;
+  position: fixed;
+  z-index: 999999;
+  background: #fff;
+  border: 1px solid #ccc;
+  top: calc(50% - 250px);
+  left: calc(50% - 250px)
+}

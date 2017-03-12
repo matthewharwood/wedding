@@ -84,6 +84,7 @@ function GoogleMapController($element, $timeout) {
 
     if(changes.selected && changes.selected.currentValue){
       this.setCenter();
+      this.openInfo(changes.selected.currentValue);
     }
     if(changes.data && changes.data.currentValue){
       this.data = changes.data.currentValue;
@@ -203,7 +204,7 @@ function GoogleMapController($element, $timeout) {
   };
 
   this.setCenter = () => {
-    this.map.setCenter(new google.maps.LatLng(this.selected.pos.lat, this.selected.pos.lng));
+    this.map.panTo(new google.maps.LatLng(this.selected.pos.lat, this.selected.pos.lng));
   };
 
   this.setMapOnAll = (map) => {
@@ -230,9 +231,19 @@ function GoogleMapController($element, $timeout) {
       };
     });
 
-    this.listeners = this.markers.map(i => {
+    this.openInfo = (i)=> {
+      this.markers.map(x => x.info.close());
+      let [mark] = this.markers.filter(m => {
+        return m.marker.title === this.selected.name;
+      });
 
+      mark.info.open(this.map, mark.marker);
+    };
+
+    this.listeners = this.markers.map(i => {
       i.marker.addListener('click', ()=> {
+        this.markers.map(x => x.info.close());
+        this.setCenter();
         i.info.open(this.map, i.marker);
       });
     });
@@ -286,7 +297,7 @@ function AttractionController($scope) {
     {name: 'Basa', desc: 'Best $8 sushi & poke', categories: ['Restaurant'], pos: {lat: 37.7527362, lng: -122.4155737}},
     {name: 'Farmhouse', desc: 'Best Thai food with pretentious interior', categories: ['Restaurant'], pos: {lat: 37.7602217, lng: -122.4134743}},
     {name: 'Nihon Whiskey', desc: 'Must go for whiskey lovers', categories: ['Bar'], pos: {lat: 37.7686563, lng: -122.4176993}},
-    {name: 'Limon Rotisserie', desc: 'Do yourself a favor and just get chicken & ceviche', categories: ['Restaurant'], pos: {lat: 37.7570572, lng: -122.4187627}},
+    {name: 'Limon Rotisserie', gdesc: 'Do yourself a favor and just get chicken & ceviche', categories: ['Restaurant'], pos: {lat: 37.7570572, lng: -122.4187627}},
     {name: 'Alcatraz', desc: 'We haven\'t been but everyon says it\'s cool ¯\_(ツ)_/¯', categories: ['Activity'], pos: {lat: 37.8269817, lng: -122.4251442}},
     {name: 'La Taqueria', desc: 'Best taco in San Francisco', categories: ['Restaurant'], pos: {lat: 37.7509003, lng:-122.4202754}},
     {name: 'UtoEpia', desc: 'Get a massage, experience uTOEpia', categories: ['Activity'], pos: {lat: 37.7856572, lng:-122.4419387}},
@@ -305,9 +316,20 @@ function AttractionController($scope) {
     this.resetFilters();
   };
 
+
   this.selected = (name)=> {
-    console.log(name, 'name');
     this.currentMarker = name;
+    this.openModal();
+  };
+
+  this.openModal = () => {
+    if(this.currentMarker.name === 'SpeakEasy') {
+      this.modal = true;
+    }
+  };
+
+  this.closeModal = ()=> {
+    this.modal = false;
   };
 
   this.resetFilters = () => {
