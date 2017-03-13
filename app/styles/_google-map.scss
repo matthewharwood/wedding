@@ -3,6 +3,7 @@ google-map {
   height: 80vh;
   position: relative;
   width: 100%;
+  background: #ddd;
 
   .full-bleed {
     display: block;
@@ -15,6 +16,7 @@ google-map {
     height: 100vh;
     width: 100%;
   }
+
   &.no-fixed {
     .fixed-position {
       position: relative;
