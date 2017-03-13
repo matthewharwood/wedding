@@ -51,9 +51,26 @@ p, li{
 }
 
 li{
-	margin-bottom: 8px;
 	list-style: none;
+	margin-bottom: 4px;
 }
+
+
+
+.column-list{
+	p{
+		margin-bottom: 5px;
+	}
+
+	ul{
+		padding: 0;
+	}
+
+	hr{
+		margin: 12px 0 12px 0;
+	}
+}
+
 
 .introduction {
 	h4{
@@ -90,6 +107,7 @@ li{
 		}
 	}
 }
+
 .selections {
   h4 {
     -webkit-font-smoothing: antialiased;

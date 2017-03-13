@@ -3,7 +3,7 @@ google-map {
   height: 80vh;
   position: relative;
   width: 100%;
-  background: #ddd;
+  background: #E3E3E3;
 
   .full-bleed {
     display: block;
@@ -33,11 +33,16 @@ google-map {
   border-right: 1px solid rgba(0, 0, 0, 0.15);
   left: 0;
   position: absolute;
-  top: 57px;
-  width: 380px;
+  top: 55px;
+  width: 100%;
   z-index: 10;
   padding-bottom: 100px;
   min-height: 100%;
+
+  @include media-breakpoint-up(md) {
+    width: 380px;
+  }
+
 }
 
 .selections::after {
@@ -49,11 +54,15 @@ google-map {
 
   position: fixed;
   content: '';
-  width: 380px;
+  width: 100%;
   left: 0;
   bottom:0;
   height: 72px;
   z-index:1000;
+  
+  @include media-breakpoint-up(md) {
+    width: 380px;
+  }  
 }
 .container-parent {
   display: block;
@@ -66,7 +75,11 @@ google-map {
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   cursor: pointer;
   padding: 20px;
+  width: 100%;
+
+  @include media-breakpoint-up(md) {
   width: 380px;
+  }
 
   &:hover {
     background-color: white;
@@ -106,6 +119,16 @@ place-item {
     .Fattraction-list {
       background-color: darken(white, 25%);
     }
+  }
+
+  .placeheadline-mobile{
+    display: block;
+    @include media-breakpoint-up(md) { display: none; }
+  }
+
+  .placeheadline-desktop{
+    display: none;
+    @include media-breakpoint-up(md) { display: block; }
   }
 }
 
