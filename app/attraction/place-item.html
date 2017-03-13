@@ -1,5 +1,5 @@
 <div ng-class="{'active': $ctrl.selected.name===$ctrl.data.name}" class="attraction-list" ng-click="$ctrl.selected({name: $ctrl.data})">
-	<h6>{{$ctrl.data.name}}</h6>
+	<h6>{{$ctrl.index + 1}}. {{$ctrl.data.name}}</h6>
 	<p class="desc">{{$ctrl.data.desc}}</p>
 	<p class="category-pill" ng-repeat="category in $ctrl.data.categories">{{category}}</p>
 </div>
