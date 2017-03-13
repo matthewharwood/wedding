@@ -99,7 +99,7 @@ function GoogleMapController($element, $timeout) {
       navigationControl: false,
       mapTypeControl: false,
       scaleControl: false,
-      draggable: false,
+      draggable: true,
       center: this.defaultMarker,
       styles: [
         {
@@ -204,6 +204,7 @@ function GoogleMapController($element, $timeout) {
   };
 
   this.setCenter = () => {
+    console.log(this.selected);
     this.map.panTo(new google.maps.LatLng(this.selected.pos.lat, this.selected.pos.lng));
   };
 
@@ -297,7 +298,7 @@ function AttractionController($scope) {
     {name: 'Basa', desc: 'Best $8 sushi & poke', categories: ['Restaurant'], pos: {lat: 37.7527362, lng: -122.4155737}},
     {name: 'Farmhouse', desc: 'Best Thai food with pretentious interior', categories: ['Restaurant'], pos: {lat: 37.7602217, lng: -122.4134743}},
     {name: 'Nihon Whiskey', desc: 'Must go for whiskey lovers', categories: ['Bar'], pos: {lat: 37.7686563, lng: -122.4176993}},
-    {name: 'Limon Rotisserie', gdesc: 'Do yourself a favor and just get chicken & ceviche', categories: ['Restaurant'], pos: {lat: 37.7570572, lng: -122.4187627}},
+    {name: 'Limon Rotisserie', desc: 'Do yourself a favor and just get chicken & ceviche', categories: ['Restaurant'], pos: {lat: 37.7570572, lng: -122.4187627}},
     {name: 'Alcatraz', desc: 'We haven\'t been but everyon says it\'s cool ¯\_(ツ)_/¯', categories: ['Activity'], pos: {lat: 37.8269817, lng: -122.4251442}},
     {name: 'La Taqueria', desc: 'Best taco in San Francisco', categories: ['Restaurant'], pos: {lat: 37.7509003, lng:-122.4202754}},
     {name: 'UtoEpia', desc: 'Get a massage, experience uTOEpia', categories: ['Activity'], pos: {lat: 37.7856572, lng:-122.4419387}},

@@ -1,9 +1,9 @@
 // bower:scss
 @import "bower_components/bootstrap/scss/bootstrap.scss";
 // endbower
-@import "./_typography.scss";
-@import "./_google-map.scss";
-@import "./_modal.scss";
+@import "typography";
+@import "google-map";
+@import "modal.scss";
 
 .browserupgrade {
   margin: 0.2em 0;
@@ -21,6 +21,9 @@
 
 .navbar {
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  li.nav-item {
+    padding: 0 6px;
+  }
 }
 
 .footer {
