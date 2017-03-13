@@ -1,6 +1,9 @@
 const module = angular.module('app', ['ui.router']);
 
-module.config(function($urlRouterProvider, $stateProvider) {
+module.config(Config);
+
+Config.$inject = ['$urlRouterProvider', '$stateProvider'];
+function Config($urlRouterProvider, $stateProvider) {
   let routes = [];
   $urlRouterProvider.when('', '/');
   routes.push({
@@ -30,7 +33,7 @@ module.config(function($urlRouterProvider, $stateProvider) {
   });
 
   routes.forEach(i => $stateProvider.state(i));
-});
+}
 
 function HomeController() {
   this.places = [
@@ -56,7 +59,7 @@ function FilterButtonsController() {
 
 module.component('googleMap', {
   template: `
-    <ng-transclude></ng-transclude> 
+    <ng-transclude></ng-transclude>
     <div class="fixed-position full-bleed"><section class="full-bleed"></section></div>
   `,
   controller: GoogleMapController,
@@ -67,6 +70,7 @@ module.component('googleMap', {
   }
 });
 
+GoogleMapController.$inject = ['$element', '$timeout'];
 function GoogleMapController($element, $timeout) {
   this.data = this.data || undefined;
   this.map = undefined;
@@ -104,35 +108,35 @@ function GoogleMapController($element, $timeout) {
       center: this.defaultMarker,
       styles: [
         {
-          featureType: "administrative",
-          elementType: "labels.text.fill",
+          featureType: 'administrative',
+          elementType: 'labels.text.fill',
           stylers: [
             {
-              color: "#444444"
+              color: '#444444'
             }
           ]
         },
         {
-          featureType: "landscape",
-          elementType: "all",
+          featureType: 'landscape',
+          elementType: 'all',
           stylers: [
             {
-              color: "#f2f2f2"
+              color: '#f2f2f2'
             }
           ]
         },
         {
-          featureType: "poi",
-          elementType: "all",
+          featureType: 'poi',
+          elementType: 'all',
           stylers: [
             {
-              visibility: "off"
+              visibility: 'off'
             }
           ]
         },
         {
-          featureType: "road",
-          elementType: "all",
+          featureType: 'road',
+          elementType: 'all',
           stylers: [
             {
               saturation: -100
@@ -143,59 +147,59 @@ function GoogleMapController($element, $timeout) {
           ]
         },
         {
-          featureType: "road.highway",
-          elementType: "all",
+          featureType: 'road.highway',
+          elementType: 'all',
           stylers: [
             {
-              visibility: "simplified"
+              visibility: 'simplified'
             }
           ]
         },
         {
-          featureType: "road.arterial",
-          elementType: "labels.icon",
+          featureType: 'road.arterial',
+          elementType: 'labels.icon',
           stylers: [
             {
-              visibility: "off"
+              visibility: 'off'
             }
           ]
         },
         {
-          featureType: "transit",
-          elementType: "all",
+          featureType: 'transit',
+          elementType: 'all',
           stylers: [
             {
-              visibility: "off"
+              visibility: 'off'
             }
           ]
         },
         {
-          featureType: "water",
-          elementType: "all",
+          featureType: 'water',
+          elementType: 'all',
           stylers: [
             {
-              color: "#46bcec"
+              color: '#46bcec'
             },
             {
-              visibility: "on"
+              visibility: 'on'
             }
           ]
         },
         {
-          featureType: "water",
-          elementType: "geometry.fill",
+          featureType: 'water',
+          elementType: 'geometry.fill',
           stylers: [
             {
-              color: "#cbd4ae"
+              color: '#cbd4ae'
             }
           ]
         },
         {
-          featureType: "water",
-          elementType: "labels.text.fill",
+          featureType: 'water',
+          elementType: 'labels.text.fill',
           stylers: [
             {
-              color: "#a1ab82"
+              color: '#a1ab82'
             }
           ]
         }
@@ -223,7 +227,7 @@ function GoogleMapController($element, $timeout) {
         data: i,
         info: new google.maps.InfoWindow({
           content: `
-            <div class="map-tooltip">          
+            <div class="map-tooltip">
                 <h6>${i.name}</h6>
                 <a target="_blank" href="${i.link}">View in Google Maps</a>
             </div>
@@ -279,7 +283,7 @@ module.component('attractionComponent', {
   controller: AttractionController,
 });
 
-function AttractionController($scope) {
+function AttractionController() {
   this.filteredPlacesList = [];
 
   this.filterList = [
@@ -360,10 +364,10 @@ function AccommodationsController() {
 }
 
 module.component('countDownComponent', {
-  template: ` <div class="pl-3">Happening in {{$ctrl.diffDays}} days {{$ctrl.hoursLeft}} hours {{$ctrl.minsLeft}} minutes {{$ctrl.secondsLeft}} seconds</div>`,
+  template: ' <div class="pl-3">Happening in {{$ctrl.diffDays}} days {{$ctrl.hoursLeft}} hours {{$ctrl.minsLeft}} minutes {{$ctrl.secondsLeft}} seconds</div>',
   controller: CountDownController
 });
-
+CountDownController.$inject = ['$interval'];
 function CountDownController($interval) {
   const _MS_PER_DAY = 1000 * 60 * 60 * 24;
   const oneDay = 24*60*60*1000;
