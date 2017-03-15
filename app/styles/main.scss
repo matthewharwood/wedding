@@ -58,11 +58,19 @@
 
 
 .home-img {
-  background-image: url("../images/hero/home_2x.jpg");
+  background-image: url("../images/hero/home_1x.jpg");
+
+  @include media-breakpoint-up(md) {
+    background-image: url("../images/hero/home_2x.jpg");
+  }
 }
 
 .visit-img {
-  background-image: url("../images/hero/visit_2x.jpg");
+  background-image: url("../images/hero/visit_1x.jpg");
+
+  @include media-breakpoint-up(md) {
+    background-image: url("../images/hero/visit_2x.jpg");
+  }
 }
 
 .photo-img {
@@ -87,7 +95,11 @@
 }
 
 #photo-9 {
-  background-image: url("../images/photo/photo-9_2x.jpg");
+  background-image: url("../images/photo/photo-9_1x.jpg");
+
+  @include media-breakpoint-up(md) {
+    background-image: url("../images/photo/photo-9_2x.jpg");
+  }
 }
 
 .navbar-light .navbar-toggler {
