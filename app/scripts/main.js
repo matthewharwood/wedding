@@ -36,6 +36,14 @@ function Config($urlRouterProvider, $stateProvider) {
 }
 
 function HomeController() {
+  this.$onInit = () => {
+     const navMain = $(".navbar-collapse"); // avoid dependency on #id
+     // "a:not([data-toggle])" - to avoid issues caused
+     // when you have dropdown inside navbar
+     navMain.on("click", "a:not([data-toggle])", null, function () {
+         navMain.collapse('hide');
+     });
+  }
   this.places = [
     {name: 'Ceremony: San Francisco City Hall', link: 'https://goo.gl/maps/33KAL4uih972', categories: ['Outdoors'], pos: {lat: 37.7792639, lng:-122.4214586}},
     {name: 'Reception: Trou Normand',  categories: ['Restaurant'],link: 'https://goo.gl/maps/nnNeSH7ZdVx', pos: {lat: 37.7866599, lng: -122.3999723}},
@@ -76,7 +84,7 @@ function GoogleMapController($element, $timeout) {
   this.map = undefined;
   this.markers = [];
   this.selected = this.selected || undefined;
-  this.defaultMarker = {lat: 37.7931154, lng: -122.4165049};
+  this.defaultMarker = {lat: 37.7931154, lng: -122.4165159};
 
   this.$onInit = () => {
 
@@ -324,8 +332,14 @@ function AttractionController() {
   ];
 
   this.$onInit = () => {
+
     this.resetFilters();
   };
+
+  this.switchSize = () => {
+
+    return (window.innerWidth <= 768);
+  }
 
 
   this.selected = (name)=> {
@@ -360,7 +374,14 @@ module.component('accommodationsComponent', {
 });
 
 function AccommodationsController() {
-
+  this.$onInit = () => {
+     const navMain = $(".navbar-collapse"); // avoid dependency on #id
+     // "a:not([data-toggle])" - to avoid issues caused
+     // when you have dropdown inside navbar
+     navMain.on("click", "a:not([data-toggle])", null, function () {
+         navMain.collapse('hide');
+     });
+  }
 }
 
 module.component('countDownComponent', {

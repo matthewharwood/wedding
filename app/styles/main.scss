@@ -36,25 +36,8 @@
 
 .home-divider {
   position: relative;
-  &::after {
-    position: absolute;
-    content: "";
-    height: 1px;
-    width: 100%;
-    background: rgba(0, 0, 0, .15);
-  }
-}
 
-.visit-divider {
-  &::after {
-    position: relative;
-    content: "";
-    height: 1px;
-    width: 100%;
-    background: rgba(0, 0, 0, .15);
-  }
 }
-
 
 .cover-img {
   height: 75vh;
@@ -75,11 +58,11 @@
 
 
 .home-img {
-  background-image: url("../images/home.jpg");
+  background-image: url("../images/hero/home_2x.jpg");
 }
 
 .visit-img {
-  background-image: url("../images/visit.jpg");
+  background-image: url("../images/hero/visit_2x.jpg");
 }
 
 .photo-img {
@@ -93,11 +76,18 @@
 }
 
 #photo-7 {
-  background-image: url("../images/photo-7.jpg");
+  width: 100%;
+  height: auto;
+
+    img{
+      width: 100%;
+      height: auto;
+      margin: 0;
+    }
 }
 
 #photo-9 {
-  background-image: url("../images/photo-9.jpg");
+  background-image: url("../images/photo/photo-9_2x.jpg");
 }
 
 .navbar-light .navbar-toggler {
