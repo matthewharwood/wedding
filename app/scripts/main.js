@@ -84,7 +84,7 @@ function GoogleMapController($element, $timeout) {
   this.map = undefined;
   this.markers = [];
   this.selected = this.selected || undefined;
-  this.defaultMarker = {lat: 37.7931154, lng: -122.4165159};
+  this.defaultMarker = {lat: 37.7812962, lng: -122.4229687};
 
   this.$onInit = () => {
 
@@ -107,7 +107,7 @@ function GoogleMapController($element, $timeout) {
 
   this.initMap = () => {
     this.map = new google.maps.Map($element.find('section')[0], {
-      zoom: 14,
+      zoom: 13,
       scrollwheel: false,
       navigationControl: false,
       mapTypeControl: false,
