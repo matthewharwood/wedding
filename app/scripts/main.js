@@ -1,7 +1,12 @@
 const module = angular.module('app', ['ui.router']);
 
-module.config(Config);
-
+module.config(Config).run(Run);
+Run.$inject = ['$rootScope'];
+function Run($rootScope) {
+  $rootScope.$on('$stateChangeSuccess', function() {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  });
+}
 Config.$inject = ['$urlRouterProvider', '$stateProvider'];
 function Config($urlRouterProvider, $stateProvider) {
   let routes = [];
