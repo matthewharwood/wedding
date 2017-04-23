@@ -52,7 +52,7 @@ function HomeController() {
   this.places = [
     {name: 'Ceremony: San Francisco City Hall', link: 'https://goo.gl/maps/33KAL4uih972', categories: ['Outdoors'], pos: {lat: 37.7792639, lng:-122.4214586}},
     {name: 'Reception: Trou Normand',  categories: ['Restaurant'],link: 'https://goo.gl/maps/nnNeSH7ZdVx', pos: {lat: 37.7866599, lng: -122.3999723}},
-    {name: 'After party: Monroe', categories: ['Cafe', 'Activity'],link: 'https://goo.gl/maps/EQpnyvbU6DL2', pos: {lat: 37.7984859, lng: -122.405144}}
+    {name: 'After party: Third Rail', categories: ['Cafe', 'Activity'],link: 'https://goo.gl/maps/nTf4Wik5djq', pos: {lat: 37.7606852, lng: -122.390322}}
   ]
 }
 
